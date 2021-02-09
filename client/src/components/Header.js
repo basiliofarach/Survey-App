@@ -29,7 +29,7 @@ class Header extends Component {
             to={this.props.auth ? '/surveys' : '/'}
             className="left brand-logo"
           >
-            Emaily
+            Survey App
           </Link>
           <ul id="nav-mobile" className="right hide-on-med-a">
             { this.renderContent() }
