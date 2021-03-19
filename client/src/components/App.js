@@ -6,7 +6,8 @@ import * as actions from '../actions';
 import Header from './Header';
 import Landing from './Landing';
 import Dashboard from './Dashboard';
-import SurveyNew from './surveys/SurveyNew'
+import SurveyNew from './surveys/SurveyNew';
+import RequireCredits from './surveys/RequireCredits';
 
 class App extends Component {
   componentDidMount() {
@@ -21,12 +22,13 @@ class App extends Component {
             <Header />
             <Route exact path="/" component={Landing} />
             <Route exact path="/surveys" component={Dashboard} />
-            <Route path="/surveys/new" component={SurveyNew} />
+            <Route path="/surveys/new" component={RequireCredits} />
           </div>
         </BrowserRouter>
       </div>
     );
   }
 }
+
 
 export default connect(null, actions)(App);

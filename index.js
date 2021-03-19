@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const bodyParser = require('body-parser');
+const webPush = require('web-push');
 const keys = require('./config/keys');
 require('./models/User');
 require('./models/Survey');
@@ -11,6 +12,8 @@ require('./services/passport');
 mongoose.connect(keys.mongoURI);
 
 const app = express();
+
+webPush.setVapidDetails('mailto: sendemailproject21@gmail.com', keys.publicVapidKey, keys.privateVapidKey);
 
 app.use(bodyParser.json());
 
@@ -38,6 +41,17 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   });
 }
+
+app.post('/subscription', (req,res) => {
+  const subscription = req.body;
+
+  res.status(201).json({});
+
+  const payload = JSON.stringify({ title: 'Push Test' });
+  webPush
+    .sendNotification(subscription, payload)
+    .catch(err => console.error(err));
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);

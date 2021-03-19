@@ -1,18 +1,37 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component } from 'react';
 import SurveyList from './surveys/SurveyList';
+import Button from '../utils/addButton';
+import { connect } from 'react-redux';
+import 'react-notifications/lib/notifications.css';
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 
-const Dashboard = () => {
-  return (
-    <div>
-      <SurveyList />
-      <div  className="fixed-action-btn">
-        <Link to="/surveys/new" className="btn-floating btn-large red">
-          <i className="material-icons">add</i>
-        </Link>
-      </div>
-    </div>
-  );
-};
 
-export default Dashboard;
+class Dashboard extends Component {
+    createNotification() {
+      return () => {
+        switch (this.props.auth.credits) {
+          case 0:
+            NotificationManager.error('You have no credits', 'Click to close!', 5000);
+            console.log(this.props.auth.credits);
+            break;
+        }
+      };
+    };
+
+    render() {
+      return(
+        <div>
+          <SurveyList />
+          <Button />
+             { this.createNotification() }
+          <NotificationContainer/>
+        </div>
+      );
+    };
+  };
+
+function mapStateToProps({ auth }){
+  return { auth };
+}
+
+export default connect(mapStateToProps)(Dashboard);

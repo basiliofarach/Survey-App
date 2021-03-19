@@ -16,6 +16,7 @@ class SurveyNew extends Component {
         />);
     }
 
+
     return (
       <SurveyForm
         onSurveySumbit={() => this.setState({ showFormReview: true })}
@@ -31,6 +32,23 @@ class SurveyNew extends Component {
   }
 }
 
+//Currently making a function so it cannot go to new page
+function requireCredits({ auth }){
+  const errors = {};
+
+  if (this.props.auth.credits<1) {
+    errors[this.props.auth.credits] = "You don't have credits";
+  }
+
+  return errors;
+}
+
+function mapStateToProps({ auth }){
+  return { auth };
+}
+
 export default reduxForm({
+  mapStateToProps,
+  requireCredits,
   form: 'surveyForm'
 })(SurveyNew);
